@@ -28,6 +28,8 @@ when making a `new Loveseat`, available options are:
 * `db.create([callback])` Creates the database if it does not already exist
 * `db.check([callback])` Checks for the presence of your selected db
 
+All callbacks are of form `(err, res)` where res is the JSON-parsed response from couch.
+
 ## license
 
 BSD
