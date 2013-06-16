@@ -7,14 +7,15 @@ function makeRequest(loveseat, method, url, data, callback) {
       method: method
     };
 
-  if (data) { options.json = data; }
+  if (data && method != 'DELETE') { options.json = data; }
+  if (data && method == 'DELETE') { options.qs = data; }
 
   request(options, function (err, res, body) {
     if (err) { return callback && callback(err); }
     if (res.statusCode == 409) {
       callback && callback(JSON.stringify(body));
     } else {
-      callback && callback(null, (data ? body : JSON.parse(body)));
+      callback && callback(null, (data && method != 'DELETE' ? body : JSON.parse(body)));
     }
   });
 
@@ -46,7 +47,7 @@ function Loveseat(options) {
   };
 
   this.destroy = function (docId, rev, callback) {
-    makeRequest(this, 'DELETE', docId, { "_rev": rev }, callback);
+    makeRequest(this, 'DELETE', docId, { "rev": rev }, callback);
   };
 
   this.check = function (callback) {
