@@ -10,20 +10,22 @@ function makeRequest(loveseat, method, url, data, callback) {
   if (data) { options.json = data; }
 
   request(options, function (err, res, body) {
+    if (err) { return callback && callback(err); }
     if (res.statusCode == 409) {
-      callback(JSON.stringify(body));
+      callback && callback(JSON.stringify(body));
     } else {
-      callback(null, body);
+      callback && callback(null, body);
     }
   });
 
 }
 function Loveseat(options) {
-
-  this.url = options.url || 'http://localhost:5849/';
+  
+  options = options || {};
+  this.url = options.url || 'http://localhost:5984/';
   this.db = options.db || 'test';
 
-  this.create = function (dbName, callback) {
+  this.create = function (callback) {
     makeRequest(this, 'PUT', '', null, callback);
   };
 
