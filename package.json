@@ -1,6 +1,6 @@
 {
   "name": "loveseat",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "very limited couchdb interface",
   "main": "index.js",
   "scripts": {

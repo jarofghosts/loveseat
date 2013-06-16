@@ -13,3 +13,7 @@ db.create(function (err, res) {
     assert.equal(res.db_name, 'test');
   });
 });
+
+db.insert({ "hello": "world" }, function (err, res) {
+  console.log(res);
+});
