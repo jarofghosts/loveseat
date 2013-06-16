@@ -14,7 +14,7 @@ function makeRequest(loveseat, method, url, data, callback) {
     if (res.statusCode == 409) {
       callback && callback(JSON.stringify(body));
     } else {
-      callback && callback(null, body);
+      callback && callback(null, JSON.parse(body));
     }
   });
 

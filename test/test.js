@@ -7,8 +7,9 @@ assert.doesNotThrow(function () {
 });
 
 db.create(function (err, res) {
-  console.log(res);
+  assert.ok(!err);
   db.check(function (err, res) {
-    console.log(res);
+    assert.ok(!err);
+    assert.equal(res.db_name, 'test');
   });
 });
