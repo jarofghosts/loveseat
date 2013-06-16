@@ -23,15 +23,15 @@ function makeRequest(loveseat, method, url, data, callback) {
 function Loveseat(options) {
   
   options = options || {};
-  this.url = options.url || 'http://localhost:5984/';
-  this.db = options.db || 'test';
+  this.settings.url = options.url || 'http://localhost:5984/';
+  this.settings.db = options.db || 'test';
 
   this.create = function (callback) {
-    makeRequest(this, 'PUT', '', null, callback);
+    makeRequest(this.settings, 'PUT', '', null, callback);
   };
 
   this.get = function (docId, callback) {
-    makeRequest(this, 'GET', docId, null, callback);
+    makeRequest(this.settings, 'GET', docId, null, callback);
   };
 
   this.insert = function (docId, doc, callback) {
@@ -43,15 +43,15 @@ function Loveseat(options) {
       docId = '';
       method = 'POST';
     }
-    makeRequest(this, method, docId, doc, callback);
+    makeRequest(this.settings, method, docId, doc, callback);
   };
 
   this.destroy = function (docId, rev, callback) {
-    makeRequest(this, 'DELETE', docId, { "rev": rev }, callback);
+    makeRequest(this.settings, 'DELETE', docId, { "rev": rev }, callback);
   };
 
   this.check = function (callback) {
-    makeRequest(this, 'GET', '', null, callback);
+    makeRequest(this.settings, 'GET', '', null, callback);
   };
 }
 
