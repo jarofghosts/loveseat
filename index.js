@@ -7,15 +7,15 @@ function makeRequest(loveseat, method, url, data, callback) {
       method: method
     };
 
-  if (data && method != 'DELETE') { options.json = data; }
-  if (data && method == 'DELETE') { options.qs = data; }
+  if (data && method != 'DELETE' && method != 'GET') { options.json = data; }
+  if (data && (method == 'DELETE' || method == 'GET')) { options.qs = data; }
 
   request(options, function (err, res, body) {
     if (err) { return callback && callback(err); }
     if (res.statusCode == 409) {
       callback && callback(JSON.stringify(body));
     } else {
-      callback && callback(null, (data && method != 'DELETE' ? body : JSON.parse(body)));
+      callback && callback(null, (options.json ? body : JSON.parse(body)));
     }
   });
 
