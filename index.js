@@ -1,10 +1,9 @@
-var request = require('request'),
-  couchDb = { url: 'http://localhost:5984/', db: 'redwah' };
+var request = require('request');
 
-function makeRequest(method, url, data, callback) {
+function makeRequest(loveseat, method, url, data, callback) {
 
   var options = {
-      url: couchDb.url + couchDb.db + '/' + url,
+      url: loveseat.url + loveseat.db + '/' + url,
       method: method
     };
 
@@ -19,37 +18,38 @@ function makeRequest(method, url, data, callback) {
   });
 
 }
+function Loveseat(options) {
 
-function create (dbName, callback) {
-  makeRequest('PUT', '', null, callback);
+  this.url = options.url || 'http://localhost:5849/';
+  this.db = options.db || 'test';
+
+  this.create = function (dbName, callback) {
+    makeRequest(this, 'PUT', '', null, callback);
+  };
+
+  this.get = function (docId, callback) {
+    makeRequest(this, 'GET', docId, null, callback);
+  };
+
+  this.insert = function (docId, doc, callback) {
+    var method = 'PUT';
+
+    if (typeof docId !== 'string') {
+      callback = doc;
+      doc = docId;
+      docId = '';
+      method = 'POST';
+    }
+    makeRequest(this, method, docId, doc, callback);
+  };
+
+  this.destroy = function (docId, rev, callback) {
+    makeRequest(this, 'DELETE', docId, { "_rev": rev }, callback);
+  };
+
+  this.check = function (callback) {
+    makeRequest(this, 'GET', '', null, callback);
+  };
 }
 
-function get (docId, callback) {
-  makeRequest('GET', docId, null, callback);
-}
-
-function insert (docId, doc, callback) {
-  var method = 'PUT';
-
-  if (typeof docId !== 'string') {
-    callback = doc;
-    doc = docId;
-    docId = '';
-    method = 'POST';
-  }
-  makeRequest(method, docId, doc, callback);
-}
-
-function destroy (docId, rev, callback) {
-}
-
-function check (callback) {
-  makeRequest('GET', '', null, callback);
-}
-
-exports.create = create;
-exports.get = get;
-exports.insert = insert;
-exports.destroy = destroy;
-exports.check = check;
-
+exports.Loveseat = Loveseat;
