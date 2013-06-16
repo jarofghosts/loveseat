@@ -23,8 +23,11 @@ function makeRequest(loveseat, method, url, data, callback) {
 function Loveseat(options) {
   
   options = options || {};
-  this.settings.url = options.url || 'http://localhost:5984/';
-  this.settings.db = options.db || 'test';
+  
+  this.settings = {
+    url: options.url || 'http://localhost:5984/',
+    db: options.db || 'test'
+  };
 
   this.create = function (callback) {
     makeRequest(this.settings, 'PUT', '', null, callback);
