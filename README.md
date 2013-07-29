@@ -1,6 +1,8 @@
 loveseat
 ===
 
+[![Build Status](https://travis-ci.org/jarofghosts/loveseat.png?branch=master)](https://travis-ci.org/jarofghosts/loveseat)
+
 Sometimes you don't need the whole couch.
 
 ## usage
