@@ -21,13 +21,14 @@ Loveseat.prototype.makeRequest = function (method, url, data, callback) {
     method: method
   };
 
-  if (data && method != 'DELETE' && method != 'GET') options.json = data;
+  if (data && (method == 'POST' || method == 'PUT')) options.json = data;
   else if (data) options.qs = data;
 
   request(options, function (err, res, body) {
     if (err) return callback && callback(err);
     if (res.statusCode == 409) return callback && callback(JSON.stringify(body));
-    callback && callback(null, (options.json ? body : JSON.parse(body)));
+
+    callback && callback(null, (options.json || !body.length ? body : JSON.parse(body)));
   });
 
 };
