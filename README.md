@@ -35,4 +35,4 @@ All callbacks are of form `(err, res)` where res is the JSON-parsed response fro
 
 ## license
 
-BSD
+MIT
