@@ -9,9 +9,9 @@ Sometimes you don't need the whole couch.
 
 ````js
 var Loveseat = require('loveseat').Loveseat,
-  db = new Loveseat({ db: 'mydb' });
+    db = new Loveseat({ db: 'mydb' });
 
-db.insert({ "name": "My Document" }, function (err, res) {
+db.insert({ name: 'My Document' }, function (err, res) {
   console.log(res);
 });
 ````
@@ -29,6 +29,7 @@ when making a `new Loveseat`, available options are:
 * `db.get(id [, callback])` Get document by `id`
 * `db.create([callback])` Creates the database if it does not already exist
 * `db.check([callback])` Checks for the presence of your selected db
+* `db.makeRequest(method[, url, data, callback)` Build a manual request to the couch.
 
 All callbacks are of form `(err, res)` where res is the JSON-parsed response from couch.
 
