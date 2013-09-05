@@ -41,7 +41,7 @@ Loveseat.prototype.get = function (docId, callback) {
 };
 
 Loveseat.prototype.destroy = function (docId, rev, callback) {
-  this.makeRequest('DELETE', docId, { "rev": rev }, callback);
+  this.makeRequest('DELETE', docId, { rev: rev }, callback);
 };
 
 Loveseat.prototype.check = function (callback) {
