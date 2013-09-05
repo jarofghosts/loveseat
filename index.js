@@ -1,26 +1,8 @@
 var request = require('request');
 
-function makeRequest(loveseat, method, url, data, callback) {
-
-  var options = {
-      url: loveseat.url + loveseat.db + '/' + url,
-      method: method
-    };
-
-  if (data && method != 'DELETE' && method != 'GET') { options.json = data; }
-  if (data && (method == 'DELETE' || method == 'GET')) { options.qs = data; }
-
-  request(options, function (err, res, body) {
-    if (err) { return callback && callback(err); }
-    if (res.statusCode == 409) {
-      callback && callback(JSON.stringify(body));
-    } else {
-      callback && callback(null, (options.json ? body : JSON.parse(body)));
-    }
-  });
-
-}
 function Loveseat(options) {
+
+  if (!(this instanceof Loveseat)) return new Loveseat(options);
   
   options = options || {};
   
@@ -29,33 +11,53 @@ function Loveseat(options) {
     db: options.db || 'test'
   };
 
-  this.create = function (callback) {
-    makeRequest(this.settings, 'PUT', '', null, callback);
-  };
-
-  this.get = function (docId, callback) {
-    makeRequest(this.settings, 'GET', docId, null, callback);
-  };
-
-  this.insert = function (docId, doc, callback) {
-    var method = 'PUT';
-
-    if (typeof docId !== 'string') {
-      callback = doc;
-      doc = docId;
-      docId = '';
-      method = 'POST';
-    }
-    makeRequest(this.settings, method, docId, doc, callback);
-  };
-
-  this.destroy = function (docId, rev, callback) {
-    makeRequest(this.settings, 'DELETE', docId, { "rev": rev }, callback);
-  };
-
-  this.check = function (callback) {
-    makeRequest(this.settings, 'GET', '', null, callback);
-  };
+  return this;
 }
+
+Loveseat.prototype.makeRequest = function (method, url, data, callback) {
+
+  var options = {
+    url: this.settings.url + this.settings.db + '/' + url,
+    method: method
+  };
+
+  if (data && method != 'DELETE' && method != 'GET') options.json = data;
+  else if (data) options.qs = data;
+
+  request(options, function (err, res, body) {
+    if (err) return callback && callback(err);
+    if (res.statusCode == 409) return callback && callback(JSON.stringify(body));
+    callback && callback(null, (options.json ? body : JSON.parse(body)));
+  });
+
+};
+
+Loveseat.prototype.create = function (callback) {
+  this.makeRequest('PUT', '', null, callback);
+};
+
+Loveseat.prototype.get = function (docId, callback) {
+  this.makeRequest('GET', docId, null, callback);
+};
+
+Loveseat.prototype.destroy = function (docId, rev, callback) {
+  this.makeRequest('DELETE', docId, { "rev": rev }, callback);
+};
+
+Loveseat.prototype.check = function (callback) {
+  this.makeRequest('HEAD', '', null, callback);
+};
+
+Loveseat.prototype.insert = function (docId, doc, callback) {
+  var method = 'PUT';
+
+  if (typeof docId !== 'string') {
+    callback = doc;
+    doc = docId;
+    docId = '';
+    method = 'POST';
+  }
+  this.makeRequest(method, docId, doc, callback);
+};
 
 exports.Loveseat = Loveseat;
