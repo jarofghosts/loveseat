@@ -1,6 +1,6 @@
 {
   "name": "loveseat",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "very limited couchdb interface",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "couch"
   ],
   "author": "jesse keane",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jarofghosts/loveseat/issues"
   }
