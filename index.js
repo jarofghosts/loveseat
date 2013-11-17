@@ -2,7 +2,7 @@ var request = require('request')
 
 function Loveseat(options) {
 
-  if (!(this instanceof Loveseat)) return new Loveseat(options);
+  if (!(this instanceof Loveseat)) return new Loveseat(options)
   
   options = options || {}
   
@@ -26,9 +26,13 @@ Loveseat.prototype.makeRequest = function (method, url, data, callback) {
 
   request(options, function (err, res, body) {
     if (err) return callback && callback(err)
-    if (res.statusCode == 409) return callback && callback(JSON.stringify(body));
+    if (res.statusCode == 409) {
+      return callback && callback(JSON.stringify(body))
+    }
 
-    callback && callback(null, (options.json || !body.length ? body : JSON.parse(body)))
+    if (callback) {
+      callback(null, (options.json || !body.length ? body : JSON.parse(body)))
+    }
   })
 
 }
@@ -58,7 +62,7 @@ Loveseat.prototype.insert = function (docId, doc, callback) {
     docId = ''
     method = 'POST'
   }
-  this.makeRequest(method, docId, doc, callback);
+  this.makeRequest(method, docId, doc, callback)
 }
 
 exports.Loveseat = Loveseat
