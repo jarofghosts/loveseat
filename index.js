@@ -38,8 +38,7 @@ function Loveseat$makeRequest(method, url, data, callback) {
     if (callback) {
       callback(null, (options.json || !body.length ? body : JSON.parse(body)))
     }
-  })
-
+  }
 }
 
 Loveseat.prototype.create = function Loveseat$create(callback) {
