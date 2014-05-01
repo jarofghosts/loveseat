@@ -15,7 +15,7 @@ function Loveseat(options) {
   return this
 }
 
-Loveseat.prototype.make_request = Loveseat$make_request
+Loveseat.prototype.makeRequest = Loveseat$make_request
 
 function Loveseat$make_request(method, url, data, callback) {
   var options = {
